@@ -9,8 +9,7 @@ function getScripts($files, $folder)
     $extensions = [
         'js' => 'node',
         'php' => 'php',
-        'py' => 'Python',
-        'java' => 'java',
+        'py' => 'python',
     ];
 
     foreach ($files as $file) {
@@ -86,7 +85,7 @@ foreach ($content as $key => $data) {
     $output = trim($content[$key]['output']);
     $str = $output;
     $str = explode(" ", $output);
-    $messages[$outputkey]['expected_input'] = "Hello World, this is name name with HNGi7 ID [HNG-0000] with email [intern@gmail.com] using [PHP] for stage two task.";
+    $messages[$outputkey]['expected_input'] = "Hello World, this is name name with HNGi7 ID [HNG-0000] with email [intern@gmail.com] using [PHP] for stage two task";
     foreach ($str as $input) {
         //Regex that  match HNG-00000
         $id = '/^HNG-\d+/i';
@@ -99,7 +98,7 @@ foreach ($content as $key => $data) {
     }
 
     $str = implode(" ", $str);
-    $re = $re = '/^Hello World,\sthis is (?<name>[\w\s]+ )with HNGi7 ID with email using for stage [two|2]+ task./i';
+    $re = $re = '/^Hello World,\sthis is (?<name>[\w\s]+ )with HNGi7 ID with email using for stage [two|2]+ task/i';
     if (!preg_match_all($re, $str)) {
         $message[$outputkey]['error'][] = "Your string does not match expected output";
         $messages[$outputkey]['output'] = $output;
@@ -112,10 +111,12 @@ foreach ($content as $key => $data) {
         $firstName = $name[0];
         $lastName = $name[1];
 
+        unset($name[0]);
+        unset($name[1]);
+
         if (!empty($name)) {
             $otherNames = implode(" ", $name);
         }
-
     }
 
     if (empty($userData)) {
@@ -162,6 +163,7 @@ foreach ($content as $key => $data) {
         $members[$outputkey]['filename'] = $filename;
         $members[$outputkey]['language'] = $userLanguage;
         $members[$outputkey]['output'] = stripbrackets($output);
+        $members[$outputkey]['status'] = true;
 
         if (!empty($otherNames)) {
             $members[$outputkey]['otherNames'] = $otherNames;
@@ -173,16 +175,12 @@ foreach ($content as $key => $data) {
         $messages[$outputkey]['id'] = $userID;
         $messages[$outputkey]['output'] = stripbrackets($output);
         $messages[$outputkey]['name'] = $firstName . ' ' . $lastName;
+
     }
 
 }
 
-// foreach ($messages as $script) {
-//     if (!empty($script['error'])) {
-//         // var_dump($script);
-
-//     }
-// }
+$total = count($members);
 
 if ($_SERVER['QUERY_STRING'] === 'json') {
     $members = json_encode($members);
@@ -191,16 +189,23 @@ if ($_SERVER['QUERY_STRING'] === 'json') {
     exit;
 }
 
-$server = $_SERVER['QUERY_STRING'];
-
 if (isset($_GET['file'])) {
-    include 'frontend/fail.php';
+    include 'frontend/file.php';
     exit;
 
 }
-$total = count($members);
-// echo $totalPassed;
-// echo $totalScripts;
+
+if (isset($_GET['passed'])) {
+    include 'frontend/passed.php';
+    exit;
+
+}
+
+if (isset($_GET['failed'])) {
+    include 'frontend/failed.php';
+    exit;
+
+}
 
 include 'frontend/output.php';
 exit;

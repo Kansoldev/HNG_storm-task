@@ -1,11 +1,3 @@
-<?php
-// $result = count($messages);
-// $page = 10;
-
-// $currentPage = ceil($result / $page);
-// var_dump($currentPage);
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +10,6 @@
       rel="stylesheet"
     />
     <style>
-
       table,
       .container {
         margin: 20px auto;
@@ -71,7 +62,7 @@
   <body>
     <header>
       <div class="container">
-        <div class="team-name"><a href="/">TEAM STORM</a></div>
+        <div class="team-name"><a href="/"> TEAM STORM</a></div>
         <ul class="leaders">
           <li>Leads:</li>
           <li>
@@ -125,12 +116,7 @@
         <!-- use bg-green-500 class for passed -->
         <?php foreach ($messages as $key => $script): ?>
         <?php if (empty($script['error'])): ?>
-        <tr class="bg-green-500">
-          <td class="border px-4 py-2"><?=$script['id']?></td>
-          <td class="border px-4 py-2"><?=$script['name']?></td>
-          <td class="border px-4 py-2"><?=$script['output']?></td>
-          <td class="border px-4 py-2"><a href="?file=<?=$key?>" target="_blank" rel="noopener noreferrer"><?=$script['filename']?></a></td>
-        </tr>
+            <?php continue;?>
         <?php else: ?>
         <tr class="bg-red-500">
           <td class="border px-4 py-2"><?="You have " . count($script['error']) . " error(s) in your script. Click filename for details"?></td>
@@ -143,17 +129,5 @@
       </tbody>
       <?php endforeach;?>
     </table>
-
-
-    <!-- <div class="container" style="text-align: right;">
-    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-  Previous
-</button>
-<button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-  Next
-</button>
-
-    </div> -->
-
   </body>
 </html>
